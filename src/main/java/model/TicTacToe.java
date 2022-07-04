@@ -24,15 +24,15 @@ public class TicTacToe {
 
     public Winner move(Player player, Cell beginCell) {
         int or = beginCell.getX(), oc = beginCell.getY();
-        /* É a sua vez de jogar? */
+        /* It is your turn? */
         if (player != turn) {
             throw new IllegalArgumentException("It is not your turn.");
         }
-        /* Origem está no tabuleiro */
+        /* The cell is on board? */
         if (!onBoard(beginCell)) {
             throw new IllegalArgumentException("Position is invalid.");
         }
-        /* Origem está vazia? */
+        /* THe cell is empty? */
         if (board[or][oc] != CellState.EMPTY) {
             throw new IllegalArgumentException("The cell is not empty.");
         }
