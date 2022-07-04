@@ -29,3 +29,11 @@ tr:last-child td {
 #message {
     text-align: center;
 }
+#botaoDIV {
+    width: 250px;
+    margin: 0 auto;
+}
+label {
+    display: inline-block;
+    width: 100px;
+}

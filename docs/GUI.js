@@ -1,15 +1,39 @@
 import {CellState} from "./CellState.js";
 import {TicTacToe} from "./TicTacToe.js";
+import {TicTacToePlayer} from "./TicTacToePlayer.js";
 import {Player} from "./Player.js";
 import {Cell} from "./Cell.js";
+import {Winner} from "./Winner.js";
 
 function GUI() {
     let game;
     function registerEvents() {
         init();
+        let iniciar = document.querySelector("#botao");
+        iniciar.onclick = init;
+    }
+    function computerPlay() {
+        let against = document.querySelector("#playAgainst");
+        if (parseInt(against.value) === 0) {
+            setMessage("Computing move...");
+            let c = new TicTacToePlayer(CellState.PLAYER2, game);
+            let ret = c.minimax(game.getBoard());
+            if (ret.cell) {
+                let d = ret.cell;
+                try {
+                    let mr = game.move(d);
+                    let table = document.querySelector("table");
+                    table.rows[d.x].cells[d.y].textContent = game.getTurn() === Player.PLAYER1 ? "O" : "X";
+                    changeMessage(mr);
+                } catch (ex) {
+                    setMessage(ex.message);
+                }
+            }
+        }
     }
     function init() {
-        game = new TicTacToe();
+        let symbol = document.querySelector("#symbol");
+        game = new TicTacToe(symbol.value === 'X' ? Player.PLAYER1 : Player.PLAYER2);
         let tab = game.getBoard();
         let tbody = document.querySelector("tbody");
         tbody.innerHTML = "";
@@ -23,6 +47,10 @@ function GUI() {
             tbody.appendChild(tr);
         }
         changeMessage();
+        let cp = document.querySelector("#currentPlayer");
+        if (parseInt(cp.value) === 1) {
+            computerPlay();
+        }
     }
     function coordinates(cell) {
         return new Cell(cell.parentNode.rowIndex, cell.cellIndex);
@@ -32,12 +60,12 @@ function GUI() {
         msg.textContent = message;
     }
     function changeMessage(m) {
-        let objs = {DRAW: "Draw!", PLAYER2: "'O' win!", PLAYER1: "'X' win!"};
-        if (objs[m]) {
-            setMessage(`Game Over! ${objs[m]}`);
+        let winnerMSG = {DRAW: "Draw!", PLAYER2: "'O' win!", PLAYER1: "'X' win!"};
+        if (winnerMSG[m]) {
+            setMessage(`Game Over! ${winnerMSG[m]}`);
         } else {
-            let msgs = {PLAYER1: "'X' turn.", PLAYER2: "'O' turn."};
-            setMessage(msgs[game.getTurn()]);
+            let turnMSG = {PLAYER1: "'X' turn.", PLAYER2: "'O' turn."};
+            setMessage(turnMSG[game.getTurn()]);
         }
     }
     function play() {
@@ -46,6 +74,9 @@ function GUI() {
             let mr = game.move(cell);
             this.textContent = game.getTurn() === Player.PLAYER1 ? "O" : "X";
             changeMessage(mr);
+            if (mr === Winner.NONE) {
+                computerPlay();
+            }
         } catch (ex) {
             setMessage(ex.message);
         }

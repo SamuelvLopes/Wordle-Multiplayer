@@ -2,8 +2,8 @@ import {Player} from "./Player.js";
 import {CellState} from "./CellState.js";
 import {Winner} from "./Winner.js";
 
-function TicTacToe() {
-    let turn = Player.PLAYER1;
+function TicTacToe(player) {
+    let turn = player;
     let rows = 3;
     let cols = 3;
     let board = [
@@ -26,9 +26,6 @@ function TicTacToe() {
 
     function move(cell) {
         let {x: or, y: oc} = cell;
-        if ((board[or][oc] === CellState.PLAYER1 && turn === Player.PLAYER2) || (board[or][oc] === CellState.PLAYER2 && turn === Player.PLAYER1)) {
-            throw new Error("It's not your turn.");
-        }
         if (!onBoard(cell)) {
             throw new Error("Cell is not on board.");
         }
@@ -40,52 +37,52 @@ function TicTacToe() {
         return endOfGame();
     }
 
-    function endOfGame() {
-        for (let i = 0; i < board.length; i++) {
+    function endOfGame(matrix = board) {
+        let testRow = (row) => {
+            let p1 = matrix[row].every(x => x === CellState.PLAYER1);
+            let p2 = matrix[row].every(x => x === CellState.PLAYER2);
+            return p1 || p2;
+        };
+        for (let i = 0; i < rows; i++) {
             if (testRow(i)) {
-                return board[i][0] === CellState.PLAYER1 ? Winner.PLAYER1 : Winner.PLAYER2;
+                return matrix[i][0] === CellState.PLAYER1 ? Winner.PLAYER1 : Winner.PLAYER2;
             }
         }
-        for (let i = 0; i < board[0].length; i++) {
+        let testColumn = (col) => {
+            let p1 = matrix.map(a => a[col]).every(x => x === CellState.PLAYER1);
+            let p2 = matrix.map(a => a[col]).every(x => x === CellState.PLAYER2);
+            return p1 || p2;
+        };
+        for (let i = 0; i < cols; i++) {
             if (testColumn(i)) {
-                return board[0][i] === CellState.PLAYER1 ? Winner.PLAYER1 : Winner.PLAYER2;
+                return matrix[0][i] === CellState.PLAYER1 ? Winner.PLAYER1 : Winner.PLAYER2;
             }
         }
+        let testMainDiagonal = () => {
+            let cells = [];
+            for (let i = 0, max = rows; i < max; i++) {
+                cells.push(matrix[i][i]);
+            }
+            let p1 = cells.every(x => x === CellState.PLAYER1);
+            let p2 = cells.every(x => x === CellState.PLAYER2);
+            return p1 || p2;
+        };
+        let testSecondDiagonal = () => {
+            let cells = [];
+            for (let i = 0, j = rows - 1, max = rows; i < max; i++, j--) {
+                cells.push(matrix[i][j]);
+            }
+            let p1 = cells.every(x => x === CellState.PLAYER1);
+            let p2 = cells.every(x => x === CellState.PLAYER2);
+            return p1 || p2;
+        };
         if (testMainDiagonal() || testSecondDiagonal()) {
-            return board[1][1] === CellState.PLAYER1 ? Winner.PLAYER1 : Winner.PLAYER2;
+            return matrix[1][1] === CellState.PLAYER1 ? Winner.PLAYER1 : Winner.PLAYER2;
         }
-        let count = board.flat().filter(x => x === CellState.EMPTY).length;
+        let count = matrix.flat().filter(x => x === CellState.EMPTY).length;
         return count === 0 ? Winner.DRAW : Winner.NONE;
     }
-    function testRow(row) {
-        let p1 = board[row].every(x => x === CellState.PLAYER1);
-        let p2 = board[row].every(x => x === CellState.PLAYER2);
-        return p1 || p2;
-    }
-    function testColumn(col) {
-        let p1 = board.map(a => a[col]).every(x => x === CellState.PLAYER1);
-        let p2 = board.map(a => a[col]).every(x => x === CellState.PLAYER2);
-        return p1 || p2;
-    }
-    function testMainDiagonal() {
-        let cells = [];
-        for (let i = 0, max = board.length; i < max; i++) {
-            cells.push(board[i][i]);
-        }
-        let p1 = cells.every(x => x === CellState.PLAYER1);
-        let p2 = cells.every(x => x === CellState.PLAYER2);
-        return p1 || p2;
-    }
-    function testSecondDiagonal() {
-        let cells = [];
-        for (let i = 0, j = board.length - 1, max = board.length; i < max; i++, j--) {
-            cells.push(board[i][j]);
-        }
-        let p1 = cells.every(x => x === CellState.PLAYER1);
-        let p2 = cells.every(x => x === CellState.PLAYER2);
-        return p1 || p2;
-    }
-    return {move, getBoard, getTurn};
+    return {move, getBoard, getTurn, endOfGame};
 }
 
 export {TicTacToe};
