@@ -1,9 +1,9 @@
-import {CellState} from "./CellState.js";
-import {TicTacToe} from "./TicTacToe.js";
-import {TicTacToePlayer} from "./TicTacToePlayer.js";
-import {Player} from "./Player.js";
-import {Cell} from "./Cell.js";
-import {Winner} from "./Winner.js";
+import { CellState } from "./CellState.js";
+import { TicTacToe } from "./TicTacToe.js";
+import { TicTacToePlayer } from "./TicTacToePlayer.js";
+import { Player } from "./Player.js";
+import { Cell } from "./Cell.js";
+import { Winner } from "./Winner.js";
 
 function GUI() {
     let game;
@@ -16,7 +16,8 @@ function GUI() {
         let against = document.querySelector("#playAgainst");
         if (parseInt(against.value) === 0) {
             setMessage("Computing move...");
-            let c = new TicTacToePlayer(CellState.PLAYER2, game);
+            let otherPlayer = game.getTurn();
+            let c = new TicTacToePlayer(otherPlayer == Player.PLAYER1 ? CellState.PLAYER2 : CellState.PLAYER1, game);
             let ret = c.minimax(game.getBoard());
             if (ret.cell) {
                 let d = ret.cell;
@@ -60,11 +61,11 @@ function GUI() {
         msg.textContent = message;
     }
     function changeMessage(m) {
-        let winnerMSG = {DRAW: "Draw!", PLAYER2: "'O' win!", PLAYER1: "'X' win!"};
+        let winnerMSG = { DRAW: "Draw!", PLAYER2: "'O' win!", PLAYER1: "'X' win!" };
         if (winnerMSG[m]) {
             setMessage(`Game Over! ${winnerMSG[m]}`);
         } else {
-            let turnMSG = {PLAYER1: "'X' turn.", PLAYER2: "'O' turn."};
+            let turnMSG = { PLAYER1: "'X' turn.", PLAYER2: "'O' turn." };
             setMessage(turnMSG[game.getTurn()]);
         }
     }
@@ -81,7 +82,7 @@ function GUI() {
             setMessage(ex.message);
         }
     }
-    return {registerEvents};
+    return { registerEvents };
 }
 let gui = new GUI();
 gui.registerEvents();
