@@ -9,7 +9,7 @@ function GUI() {
     let game;
     function registerEvents() {
         init();
-        let iniciar = document.querySelector("#botao");
+        let iniciar = document.querySelector("input[type='button']");
         iniciar.onclick = init;
     }
     function computerPlay() {

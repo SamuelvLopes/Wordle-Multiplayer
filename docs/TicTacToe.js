@@ -1,6 +1,6 @@
-import {Player} from "./Player.js";
-import {CellState} from "./CellState.js";
-import {Winner} from "./Winner.js";
+import { Player } from "./Player.js";
+import { CellState } from "./CellState.js";
+import { Winner } from "./Winner.js";
 
 function TicTacToe(player) {
     let turn = player;
@@ -19,13 +19,13 @@ function TicTacToe(player) {
         return turn;
     }
 
-    function onBoard( {x, y}) {
+    function onBoard({ x, y }) {
         let inLimit = (value, limit) => value >= 0 && value < limit;
         return (inLimit(x, rows) && inLimit(y, cols));
     }
 
     function move(cell) {
-        let {x: or, y: oc} = cell;
+        let { x: or, y: oc } = cell;
         if (!onBoard(cell)) {
             throw new Error("Cell is not on board.");
         }
@@ -82,7 +82,7 @@ function TicTacToe(player) {
         let count = matrix.flat().filter(x => x === CellState.EMPTY).length;
         return count === 0 ? Winner.DRAW : Winner.NONE;
     }
-    return {move, getBoard, getTurn, endOfGame};
+    return { move, getBoard, getTurn, endOfGame };
 }
 
-export {TicTacToe};
+export { TicTacToe };

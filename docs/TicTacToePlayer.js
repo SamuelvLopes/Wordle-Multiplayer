@@ -1,13 +1,13 @@
-import {CellState} from "./CellState.js";
-import {Winner} from "./Winner.js";
-import {Cell} from "./Cell.js";
+import { CellState } from "./CellState.js";
+import { Winner } from "./Winner.js";
+import { Cell } from "./Cell.js";
 
 function TicTacToePlayer(p, g) {
     let turn = p, game = g;
     function minimax(matrix, currentPlayer = turn, depth = 0) {
         let res = game.endOfGame(matrix);
         if (res !== Winner.NONE || matrix.flat().filter(x => x === CellState.EMPTY).length === 0) {
-            return {score: ((res === Winner.PLAYER1 && turn === CellState.PLAYER1) || (res === Winner.PLAYER2 && turn === CellState.PLAYER2)) ? 10 - depth : (res === Winner.DRAW ? 0 : depth - 10)};
+            return { score: ((res === Winner.PLAYER1 && turn === CellState.PLAYER1) || (res === Winner.PLAYER2 && turn === CellState.PLAYER2)) ? 10 - depth : (res === Winner.DRAW ? 0 : depth - 10) };
         }
         let moves = getAvailableMoves(matrix, currentPlayer);
         let nextPlayer = currentPlayer === CellState.PLAYER1 ? CellState.PLAYER2 : CellState.PLAYER1;
@@ -25,13 +25,13 @@ function TicTacToePlayer(p, g) {
                 if (matrix[i][j] === CellState.EMPTY) {
                     let clone = matrix.map(arr => arr.slice());
                     clone[i][j] = turn;
-                    moves.push({matrix: clone, cell: new Cell(i, j)});
+                    moves.push({ matrix: clone, cell: new Cell(i, j) });
                 }
             }
         }
         return moves;
     }
-    return {minimax};
+    return { minimax };
 }
 
-export {TicTacToePlayer};
+export { TicTacToePlayer };

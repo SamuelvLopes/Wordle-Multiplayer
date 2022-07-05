@@ -29,9 +29,9 @@ tr:last-child td {
 #message {
     text-align: center;
 }
-#botaoDIV {
+fieldset {
     width: 250px;
-    margin: 0 auto;
+    margin: 2em auto;
 }
 label {
     display: inline-block;
