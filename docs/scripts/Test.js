@@ -1,9 +1,9 @@
-import {TicTacToe} from "./TicTacToe.js";
-import {TicTacToePlayer} from "./TicTacToePlayer.js";
-import {Player} from "./Player.js";
-import {Cell} from "./Cell.js";
-import {CellState} from "./CellState.js";
-import {Winner} from "./Winner.js";
+import TicTacToe from "./TicTacToe.js";
+import TicTacToePlayer from "./TicTacToePlayer.js";
+import Player from "./Player.js";
+import Cell from "./Cell.js";
+import CellState from "./CellState.js";
+import Winner from "./Winner.js";
 
 function Test() {
     function player1win() {
@@ -37,7 +37,7 @@ function Test() {
                     console.log(ex.message);
                 }
             } while (mr === null);
-            if(mr !== Winner.NONE) break;
+            if (mr !== Winner.NONE) break;
             let matrix = t.getBoard();
             console.table(matrix);
             let ret = c.minimax(matrix);
@@ -47,7 +47,7 @@ function Test() {
         } while (mr === Winner.NONE);
         console.log("Vencedor: ", mr);
     }
-    return {player1win, computer};
+    return { player1win, computer };
 }
 
 let t = new Test();

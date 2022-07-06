@@ -1,8 +1,8 @@
-import { Player } from "./Player.js";
-import { CellState } from "./CellState.js";
-import { Winner } from "./Winner.js";
+import Player from "./Player.js";
+import CellState from "./CellState.js";
+import Winner from "./Winner.js";
 
-function TicTacToe(player) {
+export default function TicTacToe(player) {
     let turn = player;
     let rows = 3;
     let cols = 3;
@@ -84,5 +84,3 @@ function TicTacToe(player) {
     }
     return { move, getBoard, getTurn, endOfGame };
 }
-
-export { TicTacToe };

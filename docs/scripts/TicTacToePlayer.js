@@ -1,8 +1,8 @@
-import { CellState } from "./CellState.js";
-import { Winner } from "./Winner.js";
-import { Cell } from "./Cell.js";
+import CellState from "./CellState.js";
+import Winner from "./Winner.js";
+import Cell from "./Cell.js";
 
-function TicTacToePlayer(p, g) {
+export default function TicTacToePlayer(p, g) {
     let turn = p, game = g;
     function minimax(matrix, currentPlayer = turn, depth = 0) {
         let res = game.endOfGame(matrix);
@@ -33,5 +33,3 @@ function TicTacToePlayer(p, g) {
     }
     return { minimax };
 }
-
-export { TicTacToePlayer };

@@ -1,9 +1,9 @@
-import { CellState } from "./CellState.js";
-import { TicTacToe } from "./TicTacToe.js";
-import { TicTacToePlayer } from "./TicTacToePlayer.js";
-import { Player } from "./Player.js";
-import { Cell } from "./Cell.js";
-import { Winner } from "./Winner.js";
+import CellState from "./CellState.js";
+import TicTacToe from "./TicTacToe.js";
+import TicTacToePlayer from "./TicTacToePlayer.js";
+import Player from "./Player.js";
+import Cell from "./Cell.js";
+import Winner from "./Winner.js";
 
 function GUI() {
     let game;
@@ -16,8 +16,8 @@ function GUI() {
         let against = document.querySelector("#playAgainst");
         if (parseInt(against.value) === 0) {
             setMessage("Computing move...");
-            let otherPlayer = game.getTurn();
-            let c = new TicTacToePlayer(otherPlayer == Player.PLAYER1 ? CellState.PLAYER2 : CellState.PLAYER1, game);
+            let currentTurn = game.getTurn();
+            let c = new TicTacToePlayer(currentTurn == Player.PLAYER1 ? CellState.PLAYER1 : CellState.PLAYER2, game);
             let ret = c.minimax(game.getBoard());
             if (ret.cell) {
                 let d = ret.cell;
