@@ -2,23 +2,26 @@ import CellState from "./CellState.js";
 import Winner from "./Winner.js";
 import Cell from "./Cell.js";
 
-export default function TicTacToePlayer(p, g) {
-    let turn = p, game = g;
-    function minimax(matrix, currentPlayer = turn, depth = 0) {
-        let res = game.endOfGame(matrix);
+export default class TicTacToePlayer {
+    constructor(p, g) {
+        this.turn = p;
+        this.game = g;
+    }
+    minimax(matrix, currentPlayer = this.turn, depth = 0) {
+        let res = this.game.endOfGame(matrix);
         if (res !== Winner.NONE || matrix.flat().filter(x => x === CellState.EMPTY).length === 0) {
-            return { score: ((res === Winner.PLAYER1 && turn === CellState.PLAYER1) || (res === Winner.PLAYER2 && turn === CellState.PLAYER2)) ? 10 - depth : (res === Winner.DRAW ? 0 : depth - 10) };
+            return { score: ((res === Winner.PLAYER1 && this.turn === CellState.PLAYER1) || (res === Winner.PLAYER2 && this.turn === CellState.PLAYER2)) ? 10 - depth : (res === Winner.DRAW ? 0 : depth - 10) };
         }
-        let moves = getAvailableMoves(matrix, currentPlayer);
+        let moves = this.getAvailableMoves(matrix, currentPlayer);
         let nextPlayer = currentPlayer === CellState.PLAYER1 ? CellState.PLAYER2 : CellState.PLAYER1;
         for (let m of moves) {
-            m.score = minimax(m.matrix, nextPlayer, depth + 1).score;
+            m.score = this.minimax(m.matrix, nextPlayer, depth + 1).score;
         }
-        let f = turn === currentPlayer ? (v, max) => v > max : (v, max) => v < max;
+        let f = this.turn === currentPlayer ? (v, max) => v > max : (v, max) => v < max;
         let index = moves.reduce((iMax, x, i, arr) => f(x.score, arr[iMax].score) ? i : iMax, 0);
         return moves[index];
     }
-    function getAvailableMoves(matrix, turn) {
+    getAvailableMoves(matrix, turn) {
         let moves = [];
         for (let i = 0; i < matrix.length; i++) {
             for (let j = 0; j < matrix[0].length; j++) {
@@ -31,5 +34,4 @@ export default function TicTacToePlayer(p, g) {
         }
         return moves;
     }
-    return { minimax };
 }

@@ -5,8 +5,8 @@ import Cell from "./Cell.js";
 import CellState from "./CellState.js";
 import Winner from "./Winner.js";
 
-function Test() {
-    function player1win() {
+class Test {
+    player1win() {
         console.log("player1win");
         let t = new TicTacToe(Player.PLAYER1);
         let mr;
@@ -21,7 +21,7 @@ function Test() {
         mr = t.move(new Cell(2, 2));
         console.assert(mr === Winner.PLAYER1, "Jogador 1 venceu");
     }
-    function computer() {
+    computer() {
         console.log("computer");
         let t = new TicTacToe(Player.PLAYER1);
         let c = new TicTacToePlayer(CellState.PLAYER2, t);
@@ -47,7 +47,6 @@ function Test() {
         } while (mr === Winner.NONE);
         console.log("Vencedor: ", mr);
     }
-    return { player1win, computer };
 }
 
 let t = new Test();
