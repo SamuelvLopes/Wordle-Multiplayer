@@ -1,50 +1,52 @@
 import Cell from "./Cell.js";
 
-function GUI() {
-    let ws = null;
-    let player = null;
-    const images = { PLAYER1: "X", PLAYER2: "O" };
-    const closeCodes = { ENDGAME: { code: 4000, description: "End of game." }, ADVERSARY_QUIT: { code: 4001, description: "The opponent quit the game" } };
-    function coordinates(cell) {
+class GUI {
+    constructor() {
+        this.ws = null;
+        this.player = null;
+        this.images = { PLAYER1: "X", PLAYER2: "O" };
+        this.closeCodes = { ENDGAME: { code: 4000, description: "End of game." }, ADVERSARY_QUIT: { code: 4001, description: "The opponent quit the game" } };
+    }
+    coordinates(cell) {
         return new Cell(cell.parentNode.rowIndex, cell.cellIndex);
     }
-    function setMessage(msg) {
+    setMessage(msg) {
         let message = document.getElementById("message");
         message.innerHTML = msg;
     }
-    function readData(evt) {
+    readData(evt) {
         let data = JSON.parse(evt.data);
         switch (data.type) {
             case "OPEN":
                 /* Informando cor da peça do usuário atual */
-                player = data.turn;
-                setMessage("Waiting for opponent.");
-                clearBoard();
+                this.player = data.turn;
+                this.setMessage("Waiting for opponent.");
+                this.clearBoard();
                 break;
             case "MESSAGE":
                 /* Recebendo o tabuleiro modificado */
-                printBoard(data.board);
-                setMessage(data.turn === player ? "Your turn." : "Opponent's turn.");
+                this.printBoard(data.board);
+                this.setMessage(data.turn === this.player ? "Your turn." : "Opponent's turn.");
                 break;
             case "ENDGAME":
                 /* Fim do jogo */
-                printBoard(data.board);
-                ws.close(closeCodes.ENDGAME.code, closeCodes.ENDGAME.description);
-                endGame(data.winner);
+                this.printBoard(data.board);
+                this.ws.close(this.closeCodes.ENDGAME.code, this.closeCodes.ENDGAME.description);
+                this.endGame(data.winner);
                 break;
         }
     }
-    function endGame(type) {
-        unsetEvents();
-        ws = null;
-        setButtonText(true);
-        setMessage(`Game Over! ${(type === "DRAW") ? "Draw!" : (type === player ? "You win!" : "You lose!")}`);
+    endGame(type) {
+        this.unsetEvents();
+        this.ws = null;
+        this.setButtonText(true);
+        this.setMessage(`Game Over! ${(type === "DRAW") ? "Draw!" : (type === this.player ? "You win!" : "You lose!")}`);
     }
-    function setButtonText(on) {
+    setButtonText(on) {
         let button = document.querySelector("input[type='button']");
-        button.value = (on) ? "Start" : "Quit";
+        button.value = on ? "Start" : "Quit";
     }
-    function clearBoard() {
+    clearBoard() {
         let cells = document.querySelectorAll("td");
         cells.forEach(td => {
             td.innerHTML = "";
@@ -52,15 +54,15 @@ function GUI() {
             td.onclick = undefined;
         });
     }
-    function unsetEvents() {
+    unsetEvents() {
         let cells = document.querySelectorAll("td");
         cells.forEach(td => td.onclick = undefined);
     }
-    function play() {
-        let begin = coordinates(this);
-        ws.send(JSON.stringify(begin));
+    play(evt) {
+        let begin = this.coordinates(evt.currentTarget);
+        this.ws.send(JSON.stringify(begin));
     }
-    function printBoard(matrix) {
+    printBoard(matrix) {
         let tbody = document.querySelector("tbody");
         tbody.innerHTML = "";
         for (let i = 0; i < matrix.length; i++) {
@@ -69,11 +71,11 @@ function GUI() {
                 let td = document.createElement("td");
                 td.innerHTML = "";
                 td.className = "";
-                td.onclick = play;
+                td.onclick = this.play.bind(this);
                 switch (matrix[i][j]) {
                     case "PLAYER1":
                     case "PLAYER2":
-                        td.innerHTML = images[matrix[i][j]];
+                        td.innerHTML = this.images[matrix[i][j]];
                         break;
                 }
                 tr.appendChild(td);
@@ -81,23 +83,21 @@ function GUI() {
             tbody.appendChild(tr);
         }
     }
-    function startGame() {
-        if (ws) {
-            ws.close(closeCodes.ADVERSARY_QUIT.code, closeCodes.ADVERSARY_QUIT.description);
-            endGame();
+    startGame() {
+        if (this.ws) {
+            this.ws.close(closeCodes.ADVERSARY_QUIT.code, closeCodes.ADVERSARY_QUIT.description);
+            this.endGame();
         } else {
-            ws = new WebSocket("ws://" + document.location.host + document.location.pathname + "tictactoe");
-            ws.onmessage = readData;
-            setButtonText(false);
+            this.ws = new WebSocket("ws://" + document.location.host + document.location.pathname + "tictactoe");
+            this.ws.onmessage = this.readData.bind(this);
+            this.setButtonText(false);
         }
     }
-    function init() {
+    init() {
         let button = document.querySelector("input[type='button']");
-        button.onclick = startGame;
-        setButtonText(true);
+        button.onclick = this.startGame.bind(this);
+        this.setButtonText(true);
     }
-
-    return { init };
 }
 let gui = new GUI();
 gui.init();
