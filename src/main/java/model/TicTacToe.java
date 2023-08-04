@@ -23,7 +23,7 @@ public class TicTacToe {
     }
 
     public Winner move(Player player, Cell beginCell) {
-        int or = beginCell.getX(), oc = beginCell.getY();
+        int or = beginCell.x(), oc = beginCell.y();
         /* It is your turn? */
         if (player != turn) {
             throw new IllegalArgumentException("It is not your turn.");
@@ -93,6 +93,6 @@ public class TicTacToe {
 
     private boolean onBoard(Cell cell) {
         BiFunction<Integer, Integer, Boolean> inLimit = (value, limit) -> value >= 0 && value < limit;
-        return (inLimit.apply(cell.getX(), board.length) && inLimit.apply(cell.getY(), board[0].length));
+        return (inLimit.apply(cell.x(), board.length) && inLimit.apply(cell.y(), board[0].length));
     }
 }
