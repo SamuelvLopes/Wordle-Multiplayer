@@ -6,37 +6,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="module" src="scripts/GUI.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="index.css">
     <link rel="icon" type="image/svg" href="favicon.svg">
 </head>
 
 <body>
     <table>
-        <caption>Tic Tac Toe</caption>
+        <caption class="caption-top text-black">Tic Tac Toe</caption>
         <tbody></tbody>
     </table>
-    <fieldset>
-        <p><label for="playAgainst">Play against:</label>
-            <select name="playAgainst" id="playAgainst">
-                <option value="0">Computer</option>
-                <option value="1">Human</option>
-            </select>
-        </p>
-        <p><label for="currentPlayer">Who starts:</label>
-            <select name="currentPlayer" id="currentPlayer">
-                <option value="0">Human</option>
-                <option value="1">Computer</option>
-            </select>
-        </p>
-        <p><label for="symbol">First symbol:</label>
-            <select name="symbol" id="symbol">
-                <option value="X">X</option>
-                <option value="O">O</option>
-            </select>
-        </p>
-        <input type="button" value="Start">
-    </fieldset>
-    <div id="message"></div>
+    <form class="container mt-3">
+        <div class="row mb-3">
+            <label for="playAgainst" class="col col-form-label">Play against:</label>
+            <div class="col">
+                <select name="playAgainst" id="playAgainst" class="form-select">
+                    <option value="0">Computer</option>
+                    <option value="1">Human</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="currentPlayer" class="col col-form-label">Who starts:</label>
+            <div class="col">
+                <select name="currentPlayer" id="currentPlayer" class="form-select">
+                    <option value="0">Human</option>
+                    <option value="1">Computer</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="symbol" class="col col-form-label">First symbol:</label>
+            <div class="col">
+                <select name="symbol" id="symbol" class="form-select">
+                    <option value="X">X</option>
+                    <option value="O">O</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2 mx-auto">
+                <input type="button" value="Start" class="btn btn-primary">
+            </div>
+        </div>
+        <p id="message"></p>
+    </form>
 </body>
 
 </html>
