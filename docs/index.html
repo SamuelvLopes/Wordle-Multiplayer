@@ -13,45 +13,47 @@
 </head>
 
 <body>
-    <table>
-        <caption class="caption-top text-black">Tic Tac Toe</caption>
-        <tbody></tbody>
-    </table>
-    <form class="container mt-3">
-        <div class="row mb-3">
-            <label for="playAgainst" class="col col-form-label">Play against:</label>
-            <div class="col">
-                <select name="playAgainst" id="playAgainst" class="form-select">
-                    <option value="0">Computer</option>
-                    <option value="1">Human</option>
-                </select>
+    <main>
+        <h1 class="text-center">Tic Tac Toe</h1>
+        <table>
+            <tbody></tbody>
+        </table>
+        <form class="container mt-3">
+            <div class="row mb-3">
+                <label for="playAgainst" class="col col-form-label">Play against:</label>
+                <div class="col">
+                    <select name="playAgainst" id="playAgainst" class="form-select">
+                        <option value="0">Computer</option>
+                        <option value="1">Human</option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <label for="currentPlayer" class="col col-form-label">Who starts:</label>
-            <div class="col">
-                <select name="currentPlayer" id="currentPlayer" class="form-select">
-                    <option value="0">Human</option>
-                    <option value="1">Computer</option>
-                </select>
+            <div class="row mb-3">
+                <label for="currentPlayer" class="col col-form-label">Who starts:</label>
+                <div class="col">
+                    <select name="currentPlayer" id="currentPlayer" class="form-select">
+                        <option value="0">Human</option>
+                        <option value="1">Computer</option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <label for="symbol" class="col col-form-label">First symbol:</label>
-            <div class="col">
-                <select name="symbol" id="symbol" class="form-select">
-                    <option value="X">X</option>
-                    <option value="O">O</option>
-                </select>
+            <div class="row mb-3">
+                <label for="symbol" class="col col-form-label">First symbol:</label>
+                <div class="col">
+                    <select name="symbol" id="symbol" class="form-select">
+                        <option value="X">X</option>
+                        <option value="O">O</option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-2 mx-auto">
-                <input type="button" value="Start" class="btn btn-primary">
+            <div class="row mb-3">
+                <div class="col-2 mx-auto">
+                    <input type="button" value="Start" class="btn btn-primary">
+                </div>
             </div>
-        </div>
-        <p id="message"></p>
-    </form>
+            <p id="message" class="text-center"></p>
+        </form>
+    </main>
 </body>
 
 </html>

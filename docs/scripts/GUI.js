@@ -79,7 +79,7 @@ class GUI {
             td.textContent = this.game.getTurn() === Player.PLAYER1 ? "O" : "X";
             this.changeMessage(mr);
             if (mr === Winner.NONE) {
-                this.computerPlay();
+                setTimeout(this.computerPlay.bind(this), 1000);
             }
         } catch (ex) {
             this.setMessage(ex.message);
