@@ -85,7 +85,7 @@ class GUI {
     }
     startGame() {
         if (this.ws) {
-            this.ws.close(closeCodes.ADVERSARY_QUIT.code, closeCodes.ADVERSARY_QUIT.description);
+            this.ws.close(this.closeCodes.ADVERSARY_QUIT.code, this.closeCodes.ADVERSARY_QUIT.description);
             this.endGame();
         } else {
             this.ws = new WebSocket("ws://" + document.location.host + document.location.pathname + "tictactoe");

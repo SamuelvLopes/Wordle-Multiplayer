@@ -60,7 +60,7 @@ public class Endpoint {
                     s2 = null;
                 }
             }
-            case 4001 -> {
+            case 1001, 4001 -> {
                 if (session == s1) {
                     s2.getBasicRemote()
                             .sendObject(new Message(ConnectionType.ENDGAME, null, game.getBoard(), Winner.PLAYER2));
