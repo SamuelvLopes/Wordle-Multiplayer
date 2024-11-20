@@ -1,2 +1,2 @@
-# TicTacToe
-Implementation of the Tic Tac Toe game in Java and JavaScript.
+# Wordle
+Implementation of the Wordle game in Java and JavaScript.
