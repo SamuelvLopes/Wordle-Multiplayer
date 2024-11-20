@@ -165,6 +165,67 @@ class GUI {
         let buttons = document.querySelectorAll("button");
         buttons.forEach(b => b.onclick = this.buttonPressed.bind(this));
     }
+    setMessage(msg) {
+        let message = document.getElementById("message");
+        message.innerHTML = msg;
+    }
+    clearBoard() {
+        let cells = document.querySelectorAll("td");
+        cells.forEach(td => {
+            td.innerHTML = "";
+            td.className = "";
+            td.onclick = undefined;
+        });
+    }
+
+    printBoard(matrix) {
+        console.log(matrix)
+    }
+    
+    readData(evt) {
+        let data = JSON.parse(evt.data);
+        switch (data.type) {
+            case "OPEN":
+                /* Informando cor da peça do usuário atual */
+                this.player = data.turn;
+                this.setMessage("Waiting for opponent.");
+                this.clearBoard();
+                break;
+            case "MESSAGE":
+                /* Recebendo o tabuleiro modificado */
+                this.printBoard(data.board);
+                this.setMessage(data.turn === this.player ? "Your turn." : "Opponent's turn.");
+                break;
+            case "ENDGAME":
+                /* Fim do jogo */
+                this.printBoard(data.board);
+                this.ws.close(this.closeCodes.ENDGAME.code, this.closeCodes.ENDGAME.description);
+                this.endGame(data.winner);
+                break;
+        }
+    }
+    startGame() {
+        if (this.ws) {
+            this.ws.close(this.closeCodes.ADVERSARY_QUIT.code, this.closeCodes.ADVERSARY_QUIT.description);
+            this.endGame();
+        } else {
+            this.ws = new WebSocket("ws://" + document.location.host + document.location.pathname + "tictactoe");
+            this.ws.onmessage = this.readData.bind(this);
+            this.setButtonText(false);
+        }
+    }
+    init() {
+        console.log('init');
+        let button = document.querySelector("input[type='button']");
+        button.onclick = this.startGame.bind(this);
+        this.setButtonText(true);
+        gui.registerEvents();
+    }
+    setButtonText(on) {
+        let button = document.querySelector("input[type='button']");
+        button.value = on ? "Start" : "Quit";
+    }
 }
+
 let gui = new GUI();
-gui.registerEvents();
+gui.init();
