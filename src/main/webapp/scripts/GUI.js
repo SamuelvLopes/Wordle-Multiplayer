@@ -127,6 +127,10 @@ class GUI {
         }
     }
     process(key) {
+        if(!this.turn){
+            alert('aguarde sua vez')
+            return;
+        }
         switch (key) {
             case "Enter":
                 this.checkWord();
@@ -181,7 +185,12 @@ class GUI {
     printBoard(matrix) {
         console.log(matrix)
     }
-    
+    endGame(type) {
+        //this.unsetEvents();
+        this.ws = null;
+        this.setButtonText(true);
+        this.setMessage(`Game Over! ${(type === "DRAW") ? "Draw!" : (type === this.player ? "You win!" : "You lose!")}`);
+    }
     readData(evt) {
         let data = JSON.parse(evt.data);
         switch (data.type) {
@@ -194,12 +203,13 @@ class GUI {
             case "MESSAGE":
                 /* Recebendo o tabuleiro modificado */
                 this.printBoard(data.board);
+                this.turn = data.turn === this.player;
                 this.setMessage(data.turn === this.player ? "Your turn." : "Opponent's turn.");
                 break;
             case "ENDGAME":
                 /* Fim do jogo */
-                this.printBoard(data.board);
-                this.ws.close(this.closeCodes.ENDGAME.code, this.closeCodes.ENDGAME.description);
+                //this.printBoard(data.board);
+               // this.ws.close(this.closeCodes.ENDGAME.code, this.closeCodes.ENDGAME.description);
                 this.endGame(data.winner);
                 break;
         }
