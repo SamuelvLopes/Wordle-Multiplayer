@@ -79,6 +79,9 @@ class GUI {
     checkWord() {
         for (let i = 0; i < this.wordle.length; i++) {
             
+            console.log(this.wordle[i].currentWord,'digitei');
+            console.log(this.wordle[i].game.secret,'secret');
+
             try {
                 if (this.wordle[i].isOver) continue;
                 let temp = this.wordle[i].game.check(this.wordle[i].currentWord);
@@ -219,7 +222,7 @@ class GUI {
             this.ws.close(this.closeCodes.ADVERSARY_QUIT.code, this.closeCodes.ADVERSARY_QUIT.description);
             this.endGame();
         } else {
-            this.ws = new WebSocket("ws://" + document.location.host + document.location.pathname + "tictactoe");
+            this.ws = new WebSocket("ws://" + document.location.host + document.location.pathname + "wordle");
             this.ws.onmessage = this.readData.bind(this);
             this.setButtonText(false);
         }
