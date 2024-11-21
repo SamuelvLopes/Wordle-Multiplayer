@@ -14,7 +14,7 @@ import model.Player;
 import model.TicTacToe;
 import model.Winner;
 
-@ServerEndpoint(value = "/tictactoe", encoders = MessageEncoder.class, decoders = CellDecoder.class)
+@ServerEndpoint(value = "/wordle", encoders = MessageEncoder.class, decoders = CellDecoder.class)
 public class Endpoint {
 
     private static Session s1;
