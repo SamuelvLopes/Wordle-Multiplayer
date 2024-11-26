@@ -6,12 +6,14 @@ export default class Wordle {
     constructor(words, tries) {
         this.words = words;
         this.secret = words[Math.floor(Math.random() * words.length)];
+        
         this.tries = 0;
         this.maxTries = tries;
         this.wordLength = this.secret.length;
     }
     check(value) {
         
+
         if (value.length !== this.secret.length) {
             throw new Error(`The length of the word is incorrect. Must be ${this.secret.length}.`);
         }
