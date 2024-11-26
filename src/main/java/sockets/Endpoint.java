@@ -12,6 +12,8 @@ import jakarta.websocket.server.ServerEndpoint;
 import model.Cell;
 import model.Player;
 import model.TicTacToe;
+import model.Wordle;
+
 import model.Winner;
 
 @ServerEndpoint(value = "/wordle", encoders = MessageEncoder.class, decoders = CellDecoder.class)
@@ -19,7 +21,7 @@ public class Endpoint {
 
     private static Session s1;
     private static Session s2;
-    private static TicTacToe game;
+    private static Wordle game;
 
     @OnOpen
     public void onOpen(Session session) throws IOException, EncodeException {
@@ -27,23 +29,23 @@ public class Endpoint {
             s1 = session;
             s1.getBasicRemote().sendObject(new Message(ConnectionType.OPEN, Player.PLAYER1, null, null));
         } else if (s2 == null) {
-            game = new TicTacToe();
+            game = new Wordle("blaze");
             s2 = session;
             s2.getBasicRemote().sendObject(new Message(ConnectionType.OPEN, Player.PLAYER2, null, null));
-            sendMessage(new Message(ConnectionType.MESSAGE, game.getTurn(), game.getBoard(), null));
+            sendMessage(new Message(ConnectionType.MESSAGE, game.getTurn(),"dd", null));
         } else {
             session.close();
         }
     }
 
     @OnMessage
-    public void onMessage(Session session, Cell beginCell) throws IOException, EncodeException {
+    public void onMessage(Session session, String message) throws IOException, EncodeException {
         try {
-            Winner ret = game.move(session == s1 ? Player.PLAYER1 : Player.PLAYER2, beginCell);
-            if (ret == Winner.NONE) {
-                sendMessage(new Message(ConnectionType.MESSAGE, game.getTurn(), game.getBoard(), null));
+            String ret = game.move(session == s1 ? Player.PLAYER1 : Player.PLAYER2, message);
+            if (game.winner == Winner.NONE) {
+                sendMessage(new Message(ConnectionType.MESSAGE, game.getTurn(), ret, null));
             } else {
-                sendMessage(new Message(ConnectionType.ENDGAME, null, game.getBoard(), ret));
+                sendMessage(new Message(ConnectionType.ENDGAME, null, ret, game.winner));
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -63,11 +65,11 @@ public class Endpoint {
             case 1001, 4001 -> {
                 if (session == s1) {
                     s2.getBasicRemote()
-                            .sendObject(new Message(ConnectionType.ENDGAME, null, game.getBoard(), Winner.PLAYER2));
+                            .sendObject(new Message(ConnectionType.ENDGAME, null, "fim", Winner.PLAYER2));
                     s1 = null;
                 } else {
                     s1.getBasicRemote()
-                            .sendObject(new Message(ConnectionType.ENDGAME, null, game.getBoard(), Winner.PLAYER1));
+                            .sendObject(new Message(ConnectionType.ENDGAME, null, "fim", Winner.PLAYER1));
                     s2 = null;
                 }
             }

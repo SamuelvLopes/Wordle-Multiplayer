@@ -79,8 +79,7 @@ class GUI {
     checkWord() {
         for (let i = 0; i < this.wordle.length; i++) {
             
-            console.log(this.wordle[i].currentWord,'digitei');
-            console.log(this.wordle[i].game.secret,'secret');
+            this.ws.send(this.wordle[i].currentWord);
 
             try {
                 if (this.wordle[i].isOver) continue;
