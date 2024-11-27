@@ -13,6 +13,10 @@ import model.Cell;
 import model.Player;
 import model.TicTacToe;
 import model.Wordle;
+import model.Word;
+
+import java.util.List;
+import java.util.Random;
 
 import model.Winner;
 
@@ -26,7 +30,11 @@ public class Endpoint {
 
     @OnOpen
     public void onOpen(Session session) throws IOException, EncodeException {
-        secret = "aahed";
+        List<String> words = Word.returnWords();
+
+        // Selecionar uma palavra aleatória
+        secret = words.get(new Random().nextInt(words.size()));
+
         if (s1 == null) {
             s1 = session;
             s1.getBasicRemote().sendObject(new Message(ConnectionType.OPEN, Player.PLAYER1, secret, null));
