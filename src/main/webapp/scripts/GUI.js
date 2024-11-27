@@ -5,11 +5,15 @@ import NotInWordListError from "./NotInWordListError.js";
 
 class GUI {
     constructor() {
+
+        
         let tBodies = document.querySelectorAll("tbody");
         this.wordle = [];
         for (const table of tBodies) {
             this.wordle.push({ game: new Wordle(words, 6), row: 0, col: 0, currentWord: "", tbody: table, isOver: false });
         }
+        this.init();
+
     }
     showWord(mr, tabindex) {
         let endOfGame = () => {
@@ -80,7 +84,6 @@ class GUI {
         for (let i = 0; i < this.wordle.length; i++) {
             
             this.ws.send(this.wordle[i].currentWord);
-
             try {
                 if (this.wordle[i].isOver) continue;
                 let temp = this.wordle[i].game.check(this.wordle[i].currentWord);
@@ -196,7 +199,15 @@ class GUI {
     readData(evt) {
         let data = JSON.parse(evt.data);
         switch (data.type) {
+
             case "OPEN":
+                for (let i = 0; i < this.wordle.length; i++) {
+
+                    this.wordle[i].game.secret = data.board;
+
+                }
+
+
                 /* Informando cor da peça do usuário atual */
                 this.player = data.turn;
                 this.setMessage("Waiting for opponent.");
@@ -231,7 +242,7 @@ class GUI {
         let button = document.querySelector("input[type='button']");
         button.onclick = this.startGame.bind(this);
         this.setButtonText(true);
-        gui.registerEvents();
+        this.registerEvents();
     }
     setButtonText(on) {
         let button = document.querySelector("input[type='button']");
@@ -240,4 +251,3 @@ class GUI {
 }
 
 let gui = new GUI();
-gui.init();

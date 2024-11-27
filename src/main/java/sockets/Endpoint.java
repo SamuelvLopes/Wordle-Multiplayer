@@ -22,16 +22,18 @@ public class Endpoint {
     private static Session s1;
     private static Session s2;
     private static Wordle game;
+    private static String secret;
 
     @OnOpen
     public void onOpen(Session session) throws IOException, EncodeException {
+        secret = "aahed";
         if (s1 == null) {
             s1 = session;
-            s1.getBasicRemote().sendObject(new Message(ConnectionType.OPEN, Player.PLAYER1, null, null));
+            s1.getBasicRemote().sendObject(new Message(ConnectionType.OPEN, Player.PLAYER1, secret, null));
         } else if (s2 == null) {
-            game = new Wordle("blaze");
+            game = new Wordle(secret);
             s2 = session;
-            s2.getBasicRemote().sendObject(new Message(ConnectionType.OPEN, Player.PLAYER2, null, null));
+            s2.getBasicRemote().sendObject(new Message(ConnectionType.OPEN, Player.PLAYER2, secret, null));
             sendMessage(new Message(ConnectionType.MESSAGE, game.getTurn(),"dd", null));
         } else {
             session.close();

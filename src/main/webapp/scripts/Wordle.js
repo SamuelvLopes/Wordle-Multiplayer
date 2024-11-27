@@ -5,13 +5,20 @@ import NotInWordListError from "./NotInWordListError.js";
 export default class Wordle {
     constructor(words, tries) {
         this.words = words;
+        console.log(this.secret);
         this.secret = words[Math.floor(Math.random() * words.length)];
+        console.log(this.secret);
+        
         this.tries = 0;
         this.maxTries = tries;
         this.wordLength = this.secret.length;
     }
     check(value) {
         
+        console.log('###############################');
+        console.log(this.secret);
+        console.log('###############################');
+
         if (value.length !== this.secret.length) {
             throw new Error(`The length of the word is incorrect. Must be ${this.secret.length}.`);
         }
